@@ -1,0 +1,22 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  GREETING: Hello, World!
+
+tasks:
+  run:
+    cmds:
+      - docker run -p 5051:5000 --name sentiment sentiment:tag
+  build:
+    cmds:
+      - docker build -t sentiment:tag .
+  rm:
+    cmds:
+      - docker rm -f sentiment
+  rmall:
+    cmds:
+      # - docker stop sentiment
+      # - docker rm sentiment
+      - docker rmi sentiment
