@@ -12,11 +12,3 @@ tasks:
   build:
     cmds:
       - docker build -t sentiment:tag .
-  rm:
-    cmds:
-      - docker rm -f sentiment
-  rmall:
-    cmds:
-      # - docker stop sentiment
-      # - docker rm sentiment
-      - docker rmi sentiment

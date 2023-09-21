@@ -1,9 +1,9 @@
 # Use the official Python image as the base image
 FROM python:3.9-slim
 
-# Set environment variables for mysqlclient
+# Depending on the specifics of the mariadb-client for arm64, you might need to adjust these
 ENV MYSQLCLIENT_CFLAGS=-I/usr/include/mariadb
-ENV MYSQLCLIENT_LDFLAGS="-L/usr/lib/x86_64-linux-gnu -lmariadb"
+ENV MYSQLCLIENT_LDFLAGS="-L/usr/lib/aarch64-linux-gnu -lmariadb"
 
 # Set the working directory in the container
 WORKDIR /app
