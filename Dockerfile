@@ -5,7 +5,6 @@ FROM python:3.9-slim
 ENV MYSQLCLIENT_CFLAGS=-I/usr/include/mariadb
 ENV MYSQLCLIENT_LDFLAGS="-L/usr/lib/x86_64-linux-gnu -lmariadb"
 
-
 # Set the working directory in the container
 WORKDIR /app
 
@@ -20,6 +19,9 @@ RUN apt-get update && \
 # Install the "pattern" library
 RUN pip install pattern
 
+# Install FastAPI and Uvicorn
+RUN pip install fastapi uvicorn
+
 # Copy the requirements file into the container
 COPY requirements.txt .
 
@@ -29,8 +31,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the current directory contents into the container at /app
 COPY . /app
 
-# Expose port 5000 for the Flask app
-EXPOSE 5000
-ENV FLASK_APP=app.py
+# Expose port 8000 for the FastAPI app (Uvicorn defaults to 8000)
+EXPOSE 8000
+
 # Define the command to run your application
-CMD ["flask", "run", "--host", "0.0.0.0"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
