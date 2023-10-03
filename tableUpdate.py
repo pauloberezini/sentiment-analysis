@@ -10,7 +10,7 @@ class SingleData(BaseModel):
 
 # Set up your MySQL connection
 conn = mysql.connector.connect(
-    host="localhost",
+    host="mysqle",
     port=3306,
     user="root",
     password="root",
