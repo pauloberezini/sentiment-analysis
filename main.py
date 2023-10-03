@@ -28,6 +28,10 @@ class ArticleWithSentiment(BaseModel):
     compound: float
     status: str
 
+@app.get("/healthcheck")
+def healthcheck():
+    return {"status": "ok"}
+
 # then, in your route:
 @app.post("/analyze_sentiment_arr")
 def analyze_sentiment_arr(articles: list[GNewsArticle]):

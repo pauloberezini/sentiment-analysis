@@ -11,7 +11,15 @@ tasks:
       - uvicorn main:app --reload
   run:
     cmds:
-      - docker run --name sentiment --hostname sentiment.local --network my-net -d -e TZ=Asia/Jerusalem --restart unless-stopped -p 5051:8000 sentiment:tag
+      - docker run --name sentiment --hostname sentiment --network my-net -d -e TZ=Asia/Jerusalem --restart unless-stopped -p 8000:8000 sentiment:tag
   build:
     cmds:
-      - docker build -t sentiment:tag .
+      - docker build -t sentiment .
+  rdeploy:
+    desc: stop, remove container, rm image
+    cmds:
+      - docker stop sentiment
+      - docker rm sentiment
+      - docker rmi sentiment
+      - docker build -t sentiment .
+      - docker run --name sentiment --hostname sentiment --network my-net -d -e TZ=Asia/Jerusalem --restart unless-stopped -p 8000:8000 sentiment:tag
