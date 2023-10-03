@@ -1,16 +1,26 @@
+from typing import Optional
 from fastapi import FastAPI
 from pydantic import BaseModel
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
-class Article(BaseModel):
+app = FastAPI()
+sia = SentimentIntensityAnalyzer()
+
+class GNewsArticle(BaseModel):
+    id: Optional[int]           # Optional since in a new entity, it may not be set yet
     title: str
     description: str
+    content: Optional[str]      # Marked as optional using typing's Optional because of @Transient in Java
+    url: str
+    image: Optional[str]        # Marked as optional for the same reason
+    publishedAt: str
+    sentiment: Optional[str]    # Assuming sentiment can be optional as it's not marked as required in Java
+    sentimentPoint: float
+
 
 class SingleData(BaseModel):
     description: str
 
-app = FastAPI()
-sia = SentimentIntensityAnalyzer()
 
 class ArticleWithSentiment(BaseModel):
     title: str
@@ -20,7 +30,7 @@ class ArticleWithSentiment(BaseModel):
 
 # then, in your route:
 @app.post("/analyze_sentiment_arr")
-def analyze_sentiment_arr(articles: list[Article]):
+def analyze_sentiment_arr(articles: list[GNewsArticle]):
     result = []
     for article in articles:
         text = f"{article.title} {article.description}"
@@ -32,13 +42,20 @@ def analyze_sentiment_arr(articles: list[Article]):
         elif compound < -0.05:
             status = "negative"
         
-        result.append(ArticleWithSentiment(
+        updated_article = GNewsArticle(
+            id=article.id,
             title=article.title,
             description=article.description,
-            compound=compound,
-            status=status
-        ))
+            content=article.content,
+            url=article.url,
+            image=article.image,
+            publishedAt=article.publishedAt,
+            sentiment=status,
+            sentimentPoint=compound
+        )
+        result.append(updated_article)
     return result
+
 
 
 @app.post("/analyze_sentiment_single")

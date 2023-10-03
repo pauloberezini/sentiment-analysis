@@ -6,6 +6,9 @@ vars:
   GREETING: Hello, World!
 
 tasks:
+  default:
+    cmds:
+      - uvicorn main:app --reload
   run:
     cmds:
       - docker run --name sentiment --hostname sentiment.com --network my-net -d -e TZ=Asia/Jerusalem --restart unless-stopped -p 5051:8000 sentiment:tag
