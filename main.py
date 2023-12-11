@@ -2,6 +2,7 @@ from typing import Optional
 from fastapi import FastAPI
 from pydantic import BaseModel
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
+from nhl_api import get_nhl_standings
 
 app = FastAPI()
 sia = SentimentIntensityAnalyzer()
@@ -61,6 +62,9 @@ def analyze_sentiment_arr(articles: list[GNewsArticle]):
     return result
 
 
+@app.get("/nhl/standings")
+def nhl_standings():
+    return get_nhl_standings()
 
 @app.post("/analyze_sentiment_single")
 def analyze_sentiment_single(data: SingleData):

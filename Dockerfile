@@ -1,5 +1,5 @@
 # Use the official Python image as the base image
-FROM python:3.9-slim
+FROM python:3.10-slim
 
 # Depending on the specifics of the mariadb-client for arm64, you might need to adjust these
 ENV MYSQLCLIENT_CFLAGS=-I/usr/include/mariadb
