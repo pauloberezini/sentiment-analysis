@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from nhl_api import get_nhl_standings
+from nhl_api import get_previous_nhl_standings
 
 app = FastAPI()
 sia = SentimentIntensityAnalyzer()
@@ -78,3 +79,7 @@ def analyze_sentiment_single(data: SingleData):
         status = "negative"
     
     return {"compound": compound, "status": status}
+
+@app.get("/nhl/previousstandings")
+def nhl_previous_standings():
+    return get_previous_nhl_standings()
